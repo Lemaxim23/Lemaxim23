@@ -16,8 +16,8 @@ USERNAME = os.environ.get("GH_PROFILE_USER", "Lemaxim23")
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "assets" / "portrait.svg"
 
-COLS, ROWS = 72, 44
-CELL_W, CELL_H = 5.25, 8.0
+COLS, ROWS = 64, 46
+CELL_W, CELL_H = 5.4, 7.6
 RAMP = "@%#*+=-:. "
 STATIC = bool(os.environ.get("STATIC"))
 
@@ -30,7 +30,9 @@ def avatar_rows() -> list[str]:
     with urllib.request.urlopen(request, timeout=30) as response:
         image = Image.open(io.BytesIO(response.read()))
     image = ImageOps.exif_transpose(image).convert("RGB")
-    image = ImageOps.fit(image, (COLS, ROWS), method=Image.Resampling.LANCZOS, centering=(0.5, 0.43))
+    width, height = image.size
+    image = image.crop((0, 0, int(width * 0.67), int(height * 0.68)))
+    image = ImageOps.fit(image, (COLS, ROWS), method=Image.Resampling.LANCZOS, centering=(0.48, 0.34))
     image = ImageOps.autocontrast(ImageOps.grayscale(image), cutoff=1)
     image = ImageEnhance.Contrast(image).enhance(1.28)
 
@@ -72,11 +74,11 @@ def fallback_rows() -> list[str]:
 def main() -> None:
     try:
         rows = avatar_rows()
-        command = "./avatar-to-ascii.sh"
+        command = "portrait"
     except Exception as error:
         print(f"warning: {error}; using the MASSIMO wordmark")
         rows = fallback_rows()
-        command = "./identity.sh"
+        command = "identity"
 
     pad, title_h, status_h = 18, 34, 34
     art_w, art_h = COLS * CELL_W, ROWS * CELL_H
@@ -111,7 +113,7 @@ def main() -> None:
 <rect x=".5" y=".5" width="{width - 1}" height="{height - 1}" rx="14" fill="url(#bg)" stroke="#30363d"/>
 <line x1="0" y1="{title_h}" x2="{width}" y2="{title_h}" stroke="#30363d"/>
 <circle cx="18" cy="17" r="5" fill="#ff5f56"/><circle cx="34" cy="17" r="5" fill="#ffbd2e"/><circle cx="50" cy="17" r="5" fill="#27c93f"/>
-<text x="{width / 2}" y="21" text-anchor="middle" fill="#7d8590" font-size="11">massimo@github: ~$ {command}</text>
+<text x="{width / 2}" y="21" text-anchor="middle" fill="#7d8590" font-size="11">massimo@github · {command}</text>
 {''.join(content)}
 <line x1="0" y1="{title_h + art_h + 7}" x2="{width}" y2="{title_h + art_h + 7}" stroke="#30363d"/>
 <text x="18" y="{status_y}" fill="#7d8590" font-size="11">massimo@github:~$ <tspan fill="#22d3ee">Massimo Rugolo</tspan></text>

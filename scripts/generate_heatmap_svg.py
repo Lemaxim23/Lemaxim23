@@ -118,7 +118,7 @@ def main() -> None:
 <rect x="0.5" y="0.5" width="899" height="223" rx="14" fill="url(#bg)" stroke="#30363d"/>
 <line x1="0" y1="35" x2="900" y2="35" stroke="#30363d"/>
 <circle cx="19" cy="18" r="5" fill="#ff5f56"/><circle cx="35" cy="18" r="5" fill="#ffbd2e"/><circle cx="51" cy="18" r="5" fill="#27c93f"/>
-<text x="450" y="22" text-anchor="middle" fill="#7d8590" font-size="12">massimo@github: ~$ ./contributions.sh</text>
+<text x="450" y="22" text-anchor="middle" fill="#7d8590" font-size="12">massimo@github · activity · last 12 months</text>
 {''.join(month_labels)}
 <text class="day" x="39" y="{TOP + 1 * (CELL + GAP) + 9}">Mon</text>
 <text class="day" x="39" y="{TOP + 3 * (CELL + GAP) + 9}">Wed</text>
